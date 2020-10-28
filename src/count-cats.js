@@ -1,11 +1,14 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function countCats( matrix ) {
-  let cats = 0;
- matrix.forEach(element => { 
-   element.forEach(element_2 => { 
-     if (element_2 === "^^")cats ++; 
-   });
- });
-  return cats
+module.exports = function countCats(matrix) {
+  let matr = matrix.flat(Infinity);
+  let catcount = 0;
+  for(let i = 0; i < matr.length; i++)
+  {
+    if(matr[i] === "^^")
+    {
+      catcount++;
+    }
+  }
+  return catcount;
 };

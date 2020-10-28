@@ -1,30 +1,37 @@
 const CustomError = require("../extensions/custom-error");
 
 module.exports = function transform(arr) {
-  if (!arr instanceof Array) throw new Error("Error");
-  let goal = []
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === "--discard-next") {
-      i += 1;
-    }
-    else if (arr[i] === "--discard-prev") {
-      if (goal.length === 0 || arr[i - 2] === "--discard-next") continue
-      goal.pop();
+	if (arr == []) return [];
+	
+	const answer = [];
 
-    }
-    else if (arr[i] === "--double-next") {
-      if (i >= arr.length - 1) continue
-      goal.push(arr[i + 1]);
+	for (let i = 0; i < arr.length; i++) {
+		switch (arr[i]) {
+			case "--discard-next":
+				i++;
+				break;
 
-    }
-    else if (arr[i] === "--double-prev") {
-      if (i === 0 || arr[i - 2] === "--discard-next") continue
-      goal.push(arr[i - 1]);
+			case "--discard-prev":
+				if (answer[answer.length] == []) continue;
+				if (arr[i - 2] === '--discard-next') continue;
+				answer.pop();
+				break;
 
-    }
-    else {
-      goal.push(arr[i]);
-    }
-  }
-  return goal;
+			case "--double-next":
+				if (arr[i + 1] === undefined) continue;
+				answer.push(arr[i + 1]);
+				break;
+
+			case "--double-prev":
+				if (arr[i - 1] === undefined) continue;
+				if (arr[i - 2] === '--discard-next') continue;
+				answer.push(arr[i - 1]);
+				break;
+
+			default: 
+				answer.push(arr[i]);
+		}
+	}
+	
+	return answer;
 };
